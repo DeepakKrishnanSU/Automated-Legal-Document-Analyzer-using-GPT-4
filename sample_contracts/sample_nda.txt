@@ -1,0 +1,53 @@
+NON-DISCLOSURE AND CONFIDENTIALITY AGREEMENT
+
+This Non-Disclosure and Confidentiality Agreement ("Agreement") is entered into and made effective as of October 1, 2026 ("Effective Date"), by and between:
+
+DISCLOSING PARTY:
+Apex Cloud Technologies Inc., a corporation organized and existing under the laws of California, with its principal office located at 500 Silicon Vista Boulevard, San Jose, CA 95110 ("Discloser").
+
+AND
+
+RECEIVING PARTY:
+Quantum Systems Private Limited, a corporation organized and existing under the laws of Delaware, with its principal office located at 1200 Innovation Parkway, Suite 400, Austin, TX 78701 ("Recipient").
+
+1. PURPOSE
+The Discloser and Recipient wish to explore a potential business partnership regarding the collaborative development and integration of AI-driven enterprise document processing solutions ("Authorized Purpose"). In connection with this evaluation, Discloser may disclose proprietary and confidential business and technical information to Recipient.
+
+2. DEFINITION OF CONFIDENTIAL INFORMATION
+"Confidential Information" refers to any non-public information, technical data, trade secrets, software code, API specifications, customer lists, financial forecasts, and business strategies disclosed by the Discloser to the Recipient, whether orally or in written, visual, or electronic format, that is designated as confidential or reasonably understood to be confidential.
+
+3. OBLIGATIONS OF RECEIVING PARTY
+(a) Duty of Care: The Recipient shall hold and maintain the Confidential Information in strict confidence, exercising at least the same degree of care as it uses to protect its own confidential information of like nature, but no less than a reasonable degree of care.
+(b) Limited Access: Recipient shall restrict disclosure of Confidential Information solely to its employees, officers, and legal advisors who have a strict need to know for the Authorized Purpose and who are bound by confidentiality obligations at least as restrictive as those herein.
+(c) Non-Use: Recipient agrees not to use Discloser's Confidential Information for any purpose other than the Authorized Purpose without prior written consent.
+
+4. EXCLUSIONS FROM CONFIDENTIALITY
+Confidential Information does not include information that:
+(a) is or becomes publicly known through no breach of this Agreement by Recipient;
+(b) was already in the rightful possession of Recipient prior to disclosure;
+(c) is independently developed by Recipient without reference to Discloser's Confidential Information;
+(d) is rightfully received from a third party without duty of confidentiality.
+
+5. PAYMENT AND CONSIDERATION
+The parties acknowledge that mutual exchange of proprietary discussions and consideration of business integration constitutes sufficient legal consideration. No monetary payments or consulting fees are due under this Agreement.
+
+6. TERM AND DURATION
+This Agreement shall commence on the Effective Date and shall remain in effect for a period of twelve (12) months. The confidentiality obligations regarding trade secrets and proprietary algorithms shall survive expiration or termination for an additional period of three (3) years from the date of disclosure.
+
+7. TERMINATION CONDITIONS
+Either party may terminate this Agreement at any time with thirty (30) days prior written notice to the other party. Upon termination or written request by Discloser, Recipient shall immediately return or securely destroy all tangible and electronic copies of Confidential Information and provide written certification of such destruction within ten (10) business days.
+
+8. GOVERNING LAW AND DISPUTE RESOLUTION
+This Agreement shall be governed by and construed in accordance with the laws of the State of California, without regard to conflict of law principles. Any legal disputes arising hereunder shall be resolved through binding arbitration in San Jose, California.
+
+IN WITNESS WHEREOF, the parties hereto have executed this Non-Disclosure Agreement as of the Effective Date.
+
+APEX CLOUD TECHNOLOGIES INC.
+By: Elena Rostova
+Title: Chief Technology Officer
+Date: October 1, 2026
+
+QUANTUM SYSTEMS PRIVATE LIMITED
+By: Marcus Vance
+Title: Vice President of Engineering
+Date: October 1, 2026

@@ -1,0 +1,21 @@
+# ==========================================
+# Automated Legal Document Analyzer Dependencies
+# Course: 24CS2506 - Building Applications using GPT-4
+# Experiment 5
+# ==========================================
+
+# Core Requirements (E-Record)
+pandas>=2.0.0
+sentence-transformers>=3.0.0
+ollama>=0.3.0
+
+# Document Ingestion & Extraction (Part A)
+pypdf>=4.0.0
+python-docx>=1.0.0
+
+# Environment & Networking
+python-dotenv>=1.0.0
+requests>=2.31.0
+
+# Optional: Cloud LLM Provider (if switching from Ollama to OpenAI)
+openai>=1.0.0

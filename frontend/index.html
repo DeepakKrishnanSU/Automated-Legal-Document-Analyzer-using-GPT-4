@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JurisAI - Automated Legal Document Analyzer</title>
+    <!-- Google Fonts for Modern Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+    <!-- App Container -->
+    <div class="app-layout">
+        
+        <!-- ============================================================== -->
+        <!-- SIDEBAR NAVIGATION -->
+        <!-- ============================================================== -->
+        <aside class="app-sidebar" id="appSidebar">
+            <div class="sidebar-header">
+                <div class="brand-logo">
+                    <div class="logo-icon">
+                        <i class="fa-solid fa-scale-balanced"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h2>Juris<span>AI</span></h2>
+                        <span class="version-tag">Enterprise v1.0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Workflow Navigation Links -->
+            <nav class="sidebar-nav">
+                <div class="nav-group-title">MAIN WORKSPACE</div>
+                
+                <button class="nav-item active" data-tab="tab-dashboard" id="navDashboard">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>Dashboard</span>
+                    <span class="nav-badge ready-badge">Overview</span>
+                </button>
+
+                <button class="nav-item" data-tab="tab-ingest" id="navIngest">
+                    <i class="fa-solid fa-file-arrow-up"></i>
+                    <span>Document Ingestion</span>
+                    <span class="nav-badge" id="badgeDocStatus">Empty</span>
+                </button>
+
+                <button class="nav-item" data-tab="tab-extraction" id="navExtraction">
+                    <i class="fa-solid fa-file-lines"></i>
+                    <span>Text Extraction</span>
+                </button>
+
+                <button class="nav-item" data-tab="tab-preprocess" id="navPreprocess">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>Clause & Section Parser</span>
+                    <span class="nav-badge info-badge" id="badgeSections">0 Clauses</span>
+                </button>
+
+                <div class="nav-group-title">AI ENGINE</div>
+
+                <button class="nav-item" data-tab="tab-prompt" id="navPrompt">
+                    <i class="fa-solid fa-terminal"></i>
+                    <span>Prompt Studio</span>
+                </button>
+
+                <button class="nav-item" data-tab="tab-summary" id="navSummary">
+                    <i class="fa-solid fa-brain"></i>
+                    <span>Analysis & Summary</span>
+                    <span class="nav-pulse-dot" id="pulseAnalysis"></span>
+                </button>
+
+                <button class="nav-item" data-tab="tab-export" id="navExport">
+                    <i class="fa-solid fa-file-export"></i>
+                    <span>Reports & Export</span>
+                </button>
+            </nav>
+
+            <!-- Sidebar Footer with Model Info -->
+            <div class="sidebar-footer">
+                <div class="system-status-card" id="systemStatusCard">
+                    <div class="status-indicator-row">
+                        <span class="status-dot active-dot" id="statusDot"></span>
+                        <span class="status-label" id="statusModelName">Ollama: Connecting...</span>
+                    </div>
+                    <p class="status-subtext" id="statusSubtext">Local LLM Engine</p>
+                </div>
+                <div class="user-profile-mini">
+                    <div class="user-avatar">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div class="user-meta">
+                        <span class="user-name">Legal Analyst</span>
+                        <span class="user-role">Zero-Hallucination Mode</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ============================================================== -->
+        <!-- MAIN CONTENT AREA -->
+        <!-- ============================================================== -->
+        <main class="app-main">
+            
+            <!-- Global Top Navigation Bar -->
+            <header class="top-navbar">
+                <div class="top-nav-left">
+                    <button class="sidebar-toggle-btn" id="btnToggleSidebar" aria-label="Toggle Navigation">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div class="breadcrumb-container">
+                        <span class="breadcrumb-root">JurisAI</span>
+                        <i class="fa-solid fa-chevron-right breadcrumb-separator"></i>
+                        <span class="breadcrumb-current" id="currentBreadcrumb">Dashboard Overview</span>
+                    </div>
+                </div>
+
+                <div class="top-nav-center">
+                    <div class="active-contract-indicator" id="activeContractPill">
+                        <i class="fa-regular fa-file-lines"></i>
+                        <span id="topContractName">No contract selected</span>
+                    </div>
+                </div>
+
+                <div class="top-nav-right">
+                    <button class="action-btn secondary-btn" id="btnResetWorkflow" title="Clear current document and start over">
+                        <i class="fa-solid fa-rotate-right"></i>
+                        <span>Reset</span>
+                    </button>
+                    <button class="action-btn primary-btn" id="btnQuickAnalyze">
+                        <i class="fa-solid fa-bolt"></i>
+                        <span>Run Full Pipeline</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dynamic Workflow Viewport -->
+            <div class="content-viewport">
+
+                <!-- ========================================================== -->
+                <!-- TAB 1: DASHBOARD -->
+                <!-- ========================================================== -->
+                <section class="workflow-tab active" id="tab-dashboard">
+                    <div class="tab-header-banner">
+                        <div class="banner-content">
+                            <span class="badge-highlight">AI-Powered Legal Intelligence</span>
+                            <h1>Automated Legal Document Analyzer</h1>
+                            <p>Ingest complex contracts, extract core obligations, detect clause structures, and generate verified, non-hallucinatory executive summaries in seconds.</p>
+                            <div class="banner-cta-group">
+                                <button class="btn btn-primary" id="btnStartIngest">
+                                    <i class="fa-solid fa-file-arrow-up"></i>
+                                    <span>Upload Document</span>
+                                </button>
+                                <button class="btn btn-outline" id="btnLoadDemoNDA">
+                                    <i class="fa-solid fa-play"></i>
+                                    <span>Load Sample NDA</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="banner-graphic">
+                            <div class="floating-badge badge-1">
+                                <i class="fa-solid fa-shield-check"></i>
+                                <span>100% On-Premise Privacy</span>
+                            </div>
+                            <div class="floating-badge badge-2">
+                                <i class="fa-solid fa-microchip"></i>
+                                <span>Deterministic Extraction</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Metrics Grid -->
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-icon icon-blue">
+                                <i class="fa-solid fa-file-contract"></i>
+                            </div>
+                            <div class="metric-info">
+                                <span class="metric-title">Active Contract</span>
+                                <h3 id="metricDocName">None</h3>
+                                <span class="metric-caption" id="metricDocType">Waiting for document</span>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon icon-purple">
+                                <i class="fa-solid fa-align-left"></i>
+                            </div>
+                            <div class="metric-info">
+                                <span class="metric-title">Total Words</span>
+                                <h3 id="metricWordCount">0</h3>
+                                <span class="metric-caption" id="metricCharCount">0 characters</span>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon icon-amber">
+                                <i class="fa-solid fa-layer-group"></i>
+                            </div>
+                            <div class="metric-info">
+                                <span class="metric-title">Parsed Sections</span>
+                                <h3 id="metricSectionCount">0</h3>
+                                <span class="metric-caption" id="metricChunkCount">0 chunks</span>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon icon-green">
+                                <i class="fa-solid fa-stopwatch"></i>
+                            </div>
+                            <div class="metric-info">
+                                <span class="metric-title">Inference Speed</span>
+                                <h3 id="metricInferenceTime">--</h3>
+                                <span class="metric-caption" id="metricEngineName">Ollama Llama 3.2</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Start Capabilities Cards -->
+                    <div class="section-title-row">
+                        <h3>Workflow Pipeline Stages</h3>
+                        <span class="subtext">Follow the automated stages from raw text to structured report</span>
+                    </div>
+
+                    <div class="pipeline-cards-row">
+                        <div class="pipeline-card" data-target="tab-ingest">
+                            <div class="step-number">01</div>
+                            <div class="card-icon"><i class="fa-solid fa-file-import"></i></div>
+                            <h4>Document Ingestion</h4>
+                            <p>Support for PDF documents, TXT contracts, or direct keyboard paste.</p>
+                            <span class="card-action-link">Open Ingest <i class="fa-solid fa-arrow-right"></i></span>
+                        </div>
+
+                        <div class="pipeline-card" data-target="tab-preprocess">
+                            <div class="step-number">02</div>
+                            <div class="card-icon"><i class="fa-solid fa-filter"></i></div>
+                            <h4>Preprocessing & Sectioning</h4>
+                            <p>Cleans non-printable artifacts, standardizes typography, and segments clauses with Pandas.</p>
+                            <span class="card-action-link">View Sections <i class="fa-solid fa-arrow-right"></i></span>
+                        </div>
+
+                        <div class="pipeline-card" data-target="tab-prompt">
+                            <div class="step-number">03</div>
+                            <div class="card-icon"><i class="fa-solid fa-code"></i></div>
+                            <h4>Prompt Studio</h4>
+                            <p>Injects zero-hallucination guardrails and formatted output requirements.</p>
+                            <span class="card-action-link">Review Prompt <i class="fa-solid fa-arrow-right"></i></span>
+                        </div>
+
+                        <div class="pipeline-card" data-target="tab-summary">
+                            <div class="step-number">04</div>
+                            <div class="card-icon"><i class="fa-solid fa-brain"></i></div>
+                            <h4>AI Legal Analysis</h4>
+                            <p>Extracts parties, obligations, payments, dates, and produces executive summaries.</p>
+                            <span class="card-action-link">View Output <i class="fa-solid fa-arrow-right"></i></span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========================================================== -->
+                <!-- TAB 2: INGESTION -->
+                <!-- ========================================================== -->
+                <section class="workflow-tab" id="tab-ingest">
+                    <div class="panel-header">
+                        <div>
+                            <h2>Document Ingestion</h2>
+                            <p>Choose an ingestion method: select from verified sample agreements, upload a file, or paste legal text.</p>
+                        </div>
+                    </div>
+
+                    <!-- Ingestion Grid -->
+                    <div class="ingest-grid">
+                        
+                        <!-- Left Column: Sample Contracts -->
+                        <div class="card-box sample-presets-box">
+                            <div class="card-box-header">
+                                <i class="fa-solid fa-bookmark"></i>
+                                <h3>Verified Sample Contracts</h3>
+                            </div>
+                            <p class="box-desc">Quickly test the engine with pre-loaded agreements matching standard legal structures:</p>
+                            
+                            <div class="sample-list" id="sampleContractsList">
+                                <div class="sample-item" data-filename="sample_nda.txt">
+                                    <div class="sample-icon"><i class="fa-solid fa-user-shield"></i></div>
+                                    <div class="sample-details">
+                                        <h4>Non-Disclosure Agreement</h4>
+                                        <span>sample_nda.txt • Two-party mutual NDA</span>
+                                    </div>
+                                    <button class="btn btn-sm btn-outline btn-load-sample">Load</button>
+                                </div>
+
+                                <div class="sample-item" data-filename="employment_contract.txt">
+                                    <div class="sample-icon"><i class="fa-solid fa-briefcase"></i></div>
+                                    <div class="sample-details">
+                                        <h4>Standard Employment Agreement</h4>
+                                        <span>employment_contract.txt • Senior ML Engineer</span>
+                                    </div>
+                                    <button class="btn btn-sm btn-outline btn-load-sample">Load</button>
+                                </div>
+
+                                <div class="sample-item" data-filename="service_agreement.txt">
+                                    <div class="sample-icon"><i class="fa-solid fa-handshake"></i></div>
+                                    <div class="sample-details">
+                                        <h4>Master Cloud Services Agreement</h4>
+                                        <span>service_agreement.txt • Cloud migration MSA</span>
+                                    </div>
+                                    <button class="btn btn-sm btn-outline btn-load-sample">Load</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column: Manual Editor / Upload -->
+                        <div class="card-box custom-input-box">
+                            <div class="card-box-header">
+                                <i class="fa-solid fa-keyboard"></i>
+                                <h3>Custom Document Entry</h3>
+                            </div>
+
+                            <div class="input-form-group">
+                                <label for="inputDocTitle">Contract Title / Reference Label</label>
+                                <input type="text" id="inputDocTitle" placeholder="e.g., Commercial Lease Agreement 2026" class="form-control">
+                            </div>
+
+                            <div class="input-form-group">
+                                <label for="inputDocText">Legal Contract Text</label>
+                                <textarea id="inputDocText" placeholder="Paste or type contract clauses here..." rows="12" class="form-control font-code"></textarea>
+                            </div>
+
+                            <div class="form-actions-row">
+                                <span class="character-counter" id="liveCharCounter">0 words • 0 characters</span>
+                                <div class="btn-group">
+                                    <button class="btn btn-outline" id="btnClearTextInput">Clear</button>
+                                    <button class="btn btn-primary" id="btnSubmitTextInput">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>Ingest Document</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- ========================================================== -->
+                <!-- TAB 3: EXTRACTION PREVIEW -->
+                <!-- ========================================================== -->
+                <section class="workflow-tab" id="tab-extraction">
+                    <div class="panel-header">
+                        <div>
+                            <h2>Text Extraction & Document Metadata</h2>
+                            <p>Verify the integrity of raw text extracted from the document stream.</p>
+                        </div>
+                        <div class="panel-header-actions">
+                            <button class="btn btn-outline btn-sm" id="btnCopyRawText">
+                                <i class="fa-regular fa-copy"></i> Copy Text
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Metadata Cards Row -->
+                    <div class="metadata-strip" id="metadataStrip">
+                        <div class="meta-pill">
+                            <span class="meta-label">Source</span>
+                            <span class="meta-value" id="metaSource">--</span>
+                        </div>
+                        <div class="meta-pill">
+                            <span class="meta-label">Format</span>
+                            <span class="meta-value" id="metaFormat">--</span>
+                        </div>
+                        <div class="meta-pill">
+                            <span class="meta-label">Words</span>
+                            <span class="meta-value" id="metaWords">0</span>
+                        </div>
+                        <div class="meta-pill">
+                            <span class="meta-label">Characters</span>
+                            <span class="meta-value" id="metaChars">0</span>
+                        </div>
+                        <div class="meta-pill">
+                            <span class="meta-label">Estimated Pages</span>
+                            <span class="meta-value" id="metaPages">0</span>
+                        </div>
+                    </div>
+
+                    <!-- Raw Text Inspector -->
+                    <div class="card-box text-viewer-box">
+                        <div class="card-box-header">
+                            <i class="fa-solid fa-file-lines"></i>
+                            <h3>Extracted Document Stream</h3>
+                        </div>
+                        <pre class="code-viewport" id="rawTextViewport">No document loaded yet. Please select or paste a contract in Document Ingestion.</pre>
+                    </div>
+                </section>
+
+                <!-- ========================================================== -->
+                <!-- TAB 4: PREPROCESSING & SECTIONS -->
+                <!-- ========================================================== -->
+                <section class="workflow-tab" id="tab-preprocess">
+                    <div class="panel-header">
+                        <div>
+                            <h2>Clause & Section Parser</h2>
+                            <p>Document normalization, whitespace reduction, and structured clause detection using Pandas.</p>
+                        </div>
+                        <button class="btn btn-primary" id="btnRunPreprocess">
+                            <i class="fa-solid fa-arrows-rotate"></i> Re-Parse Document
+                        </button>
+                    </div>
+
+                    <!-- Stats Bar -->
+                    <div class="preprocess-stats-bar">
+                        <div class="stat-bubble">
+                            <span class="bubble-title">Cleaning Reduction</span>
+                            <span class="bubble-val" id="statReduction">0.0%</span>
+                        </div>
+                        <div class="stat-bubble">
+                            <span class="bubble-title">Cleaned Chars</span>
+                            <span class="bubble-val" id="statCleanChars">0</span>
+                        </div>
+                        <div class="stat-bubble">
+                            <span class="bubble-title">Identified Sections</span>
+                            <span class="bubble-val" id="statSectionCount">0</span>
+                        </div>
+                        <div class="stat-bubble">
+                            <span class="bubble-title">Document Chunks</span>
+                            <span class="bubble-val" id="statChunkCount">0</span>
+                        </div>
+                    </div>
+
+                    <!-- Sections Table -->
+                    <div class="card-box table-box">
+                        <div class="card-box-header">
+                            <i class="fa-solid fa-table-list"></i>
+                            <h3>Detected Contract Clauses & Articles</h3>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="custom-table" id="tableSections">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 80px;">#</th>
+                                        <th style="width: 280px;">Section / Clause Title</th>
+                                        <th style="width: 100px;">Words</th>
+                                        <th>Content Snippet</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tableSectionsBody">
+                                    <tr>
+                                        <td colspan="4" class="empty-table-msg">Run ingestion and preprocessing to populate sections.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Cleaned Text View -->
+                    <div class="card-box">
+                        <div class="card-box-header">
+                            <i class="fa-solid fa-broom"></i>
+                            <h3>Normalized Text View</h3>
+                        </div>
+                        <pre class="code-viewport" id="cleanedTextViewport">Cleaned text will appear here...</pre>
+                    </div>
+                </section>
+
+                <!-- ========================================================== -->
+                <!-- TAB 5: PROMPT STUDIO -->
+                <!-- ========================================================== -->
+                <section class="workflow-tab" id="tab-prompt">
+                    <div class="panel-header">
+                        <div>
+                            <h2>Prompt Studio & Guardrails</h2>
+                            <p>Inspect the system instructions, anti-hallucination rules, and the complete prompt constructed for the LLM.</p>
+                        </div>
+                    </div>
+
+                    <!-- Guardrail Alert Banner -->
+                    <div class="alert-box alert-info">
+                        <div class="alert-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                        <div class="alert-text">
+                            <strong>Zero-Hallucination Policy Active:</strong> The prompt explicitly instructs the LLM: 
+                            <em>"Do NOT invent or assume information. If any information is not explicitly mentioned, state 'Not mentioned in the document.'"</em>
+                        </div>
+                    </div>
+
+                    <!-- System & User Prompts Grid -->
+                    <div class="prompt-grid">
+                        <div class="card-box">
+                            <div class="card-box-header">
+                                <i class="fa-solid fa-robot"></i>
+                                <h3>System Role Instruction</h3>
+                            </div>
+                            <pre class="code-viewport prompt-code" id="systemPromptViewport">You are an expert legal document analysis assistant...</pre>
+                        </div>
+
+                        <div class="card-box">
+                            <div class="card-box-header">
+                                <i class="fa-solid fa-user-pen"></i>
+                                <h3>Generated Prompt Payload</h3>
+                            </div>
+                            <pre class="code-viewport prompt-code" id="userPromptViewport">Load a contract to inspect prompt formulation...</pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========================================================== -->
+                <!-- TAB 6: AI ANALYSIS & SUMMARY -->
+                <!-- ========================================================== -->
+                <section class="workflow-tab" id="tab-summary">
+                    <div class="panel-header">
+                        <div>
+                            <h2>Legal Analysis & Executive Summary</h2>
+                            <p>Structured legal intelligence extracted directly from the contract terms.</p>
+                        </div>
+                        <div class="panel-header-actions">
+                            <button class="btn btn-outline btn-sm" id="btnCopyFormattedReport">
+                                <i class="fa-regular fa-copy"></i> Copy Analysis
+                            </button>
+                            <button class="btn btn-primary" id="btnExecuteAnalysis">
+                                <i class="fa-solid fa-play"></i> Run Inference
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Inference Loading State (Hidden by default) -->
+                    <div class="loading-overlay" id="loadingOverlay">
+                        <div class="spinner"></div>
+                        <h3>Analyzing Legal Document...</h3>
+                        <p id="loadingStatusText">Connecting to Ollama (llama3.2)... Extracting clauses and verifying obligations...</p>
+                    </div>
+
+                    <!-- Structured Cards Grid -->
+                    <div class="analysis-results-container" id="analysisResultsContainer">
+                        
+                        <!-- Top Summary Banner Card -->
+                        <div class="card-box executive-summary-card">
+                            <div class="summary-card-header">
+                                <i class="fa-solid fa-feather-pointed"></i>
+                                <div>
+                                    <h3>Executive Summary</h3>
+                                    <span class="card-subtitle">Synthesized Legal Abstract</span>
+                                </div>
+                            </div>
+                            <div class="summary-body" id="resSummary">
+                                Load a contract and click "Run Inference" to generate the structured analysis.
+                            </div>
+                        </div>
+
+                        <!-- 2-Column Extraction Grid -->
+                        <div class="cards-duo-grid">
+                            
+                            <!-- Left Column -->
+                            <div class="card-box">
+                                <div class="card-box-header">
+                                    <i class="fa-solid fa-tag"></i>
+                                    <h3>Document Classification</h3>
+                                </div>
+                                <div class="field-item">
+                                    <span class="field-label">Document Type</span>
+                                    <div class="field-value" id="resDocType">Not analyzed</div>
+                                </div>
+                                <div class="field-item">
+                                    <span class="field-label">Parties Involved</span>
+                                    <div class="field-value" id="resParties">Not analyzed</div>
+                                </div>
+                                <div class="field-item">
+                                    <span class="field-label">Purpose & Scope</span>
+                                    <div class="field-value" id="resPurpose">Not analyzed</div>
+                                </div>
+                                <div class="field-item">
+                                    <span class="field-label">Duration & Term</span>
+                                    <div class="field-value" id="resDuration">Not analyzed</div>
+                                </div>
+                            </div>
+
+                            <!-- Right Column -->
+                            <div class="card-box">
+                                <div class="card-box-header">
+                                    <i class="fa-solid fa-coins"></i>
+                                    <h3>Financial & Termination Terms</h3>
+                                </div>
+                                <div class="field-item">
+                                    <span class="field-label">Payment Terms & Consideration</span>
+                                    <div class="field-value" id="resPayment">Not analyzed</div>
+                                </div>
+                                <div class="field-item">
+                                    <span class="field-label">Termination Conditions</span>
+                                    <div class="field-value" id="resTermination">Not analyzed</div>
+                                </div>
+                                <div class="field-item">
+                                    <span class="field-label">Important Dates & Deadlines</span>
+                                    <div class="field-value" id="resDates">Not analyzed</div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Full Width Key Obligations Card -->
+                        <div class="card-box">
+                            <div class="card-box-header">
+                                <i class="fa-solid fa-list-check"></i>
+                                <h3>Key Obligations & Responsibilities</h3>
+                            </div>
+                            <div class="field-value font-prose" id="resObligations">
+                                Not analyzed
+                            </div>
+                        </div>
+
+                        <!-- Full Width Potentially Important Clauses Card -->
+                        <div class="card-box">
+                            <div class="card-box-header">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                <h3>Potentially Important Clauses</h3>
+                            </div>
+                            <div class="field-value font-prose" id="resClauses">
+                                Not analyzed
+                            </div>
+                        </div>
+
+                        <!-- Raw LLM Output Drawer -->
+                        <details class="raw-response-drawer">
+                            <summary><i class="fa-solid fa-code"></i> View Raw LLM Output</summary>
+                            <pre class="code-viewport" id="rawLLMViewport">Raw response text will be displayed here...</pre>
+                        </details>
+
+                    </div>
+                </section>
+
+                <!-- ========================================================== -->
+                <!-- TAB 7: EXPORT & REPORTS -->
+                <!-- ========================================================== -->
+                <section class="workflow-tab" id="tab-export">
+                    <div class="panel-header">
+                        <div>
+                            <h2>Reports & Export</h2>
+                            <p>Download the structured legal analysis or save directly to the system reports folder.</p>
+                        </div>
+                    </div>
+
+                    <div class="export-grid">
+                        
+                        <!-- Save to outputs/ folder -->
+                        <div class="card-box">
+                            <div class="card-box-header">
+                                <i class="fa-solid fa-floppy-disk"></i>
+                                <h3>Save to System Outputs Folder</h3>
+                            </div>
+                            <p class="box-desc">Saves the complete formatted legal analysis report directly to disk at <code>outputs/legal_analysis.txt</code>.</p>
+                            <button class="btn btn-primary" id="btnSaveToDisk">
+                                <i class="fa-solid fa-file-arrow-down"></i>
+                                <span>Save Report to Disk</span>
+                            </button>
+                            <div class="save-status-msg" id="saveDiskStatus"></div>
+                        </div>
+
+                        <!-- Browser Download -->
+                        <div class="card-box">
+                            <div class="card-box-header">
+                                <i class="fa-solid fa-download"></i>
+                                <h3>Direct Browser Download</h3>
+                            </div>
+                            <p class="box-desc">Download a copy of the legal report as a clean UTF-8 text file directly to your downloads folder.</p>
+                            <button class="btn btn-outline" id="btnDownloadBrowser">
+                                <i class="fa-solid fa-cloud-arrow-down"></i>
+                                <span>Download Report (.txt)</span>
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <!-- Report Preview -->
+                    <div class="card-box" style="margin-top: 24px;">
+                        <div class="card-box-header">
+                            <i class="fa-solid fa-file-contract"></i>
+                            <h3>Formatted Report Preview</h3>
+                        </div>
+                        <pre class="code-viewport font-mono" id="reportPreviewViewport">No report generated yet. Run analysis first.</pre>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Notification Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Main JavaScript Logic -->
+    <script src="app.js"></script>
+</body>
+</html>

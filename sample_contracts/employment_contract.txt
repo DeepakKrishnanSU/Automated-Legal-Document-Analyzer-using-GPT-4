@@ -1,0 +1,49 @@
+STANDARD EMPLOYMENT AGREEMENT
+
+This Employment Agreement ("Agreement") is made and entered into on this 15th day of November, 2026 ("Effective Date"), by and between:
+
+EMPLOYER:
+Nexus Tech Innovations Corp., a technology firm having its registered corporate headquarters at 742 Evergreen Terrace, Floor 12, New York, NY 10001 ("Employer" or "Company").
+
+AND
+
+EMPLOYEE:
+Sarah Jenkins, residing at 350 Manhattan Avenue, Apartment 4B, Brooklyn, NY 11211 ("Employee").
+
+1. POSITION AND DUTIES
+(a) Title: The Company hereby employs Employee in the full-time position of Senior Machine Learning Engineer.
+(b) Obligations and Responsibilities: Employee shall report directly to the VP of Artificial Intelligence. Employee agrees to devote their full working time, attention, skill, and best efforts to designing, training, evaluating, and deploying enterprise machine learning architectures, maintaining technical documentation, collaborating with cross-functional product teams, and complying with all company policies.
+
+2. TERM AND DURATION
+The term of this employment shall commence on November 15, 2026 ("Start Date") and shall continue for an initial duration of twenty-four (24) months, unless terminated earlier pursuant to the termination provisions outlined in Section 6. Upon completion of the initial term, this Agreement shall automatically renew on a month-to-month basis unless either party provides written notice of non-renewal.
+
+3. COMPENSATION AND PAYMENT TERMS
+(a) Base Salary: The Company shall pay the Employee an annual gross base salary of $145,000 (One Hundred Forty-Five Thousand US Dollars), payable in equal monthly installments on the final business day of each calendar month, subject to standard statutory tax withholdings and deductions.
+(b) Annual Performance Bonus: Employee shall be eligible for an annual discretionary bonus of up to 15% of annual base salary, contingent upon meeting performance milestones set forth by the engineering leadership.
+(c) Benefits: Employee is entitled to health insurance, 20 days of paid annual leave, and participation in the company 401(k) retirement plan.
+
+4. CONFIDENTIALITY AND PROPRIETARY INFORMATION
+Employee recognizes that during employment they will have access to proprietary trade secrets, neural network weights, datasets, customer data, and patented inventions. Employee agrees not to disclose, publish, or transfer any proprietary information to any external third party during or after the employment term without prior written authorization from the Company.
+
+5. INTELLECTUAL PROPERTY ASSIGNMENT
+All inventions, source code, models, algorithms, and documentation developed by the Employee during the period of employment, whether on company premises or remotely, that relate directly to the business of the Company shall belong exclusively to Nexus Tech Innovations Corp.
+
+6. TERMINATION CONDITIONS
+(a) Termination Without Cause: Either party may terminate this Agreement without cause upon giving thirty (30) days prior written notice to the other party. The Company reserves the right to provide compensation in lieu of the notice period.
+(b) Termination For Cause: The Company may terminate Employee immediately without notice or severance in the event of gross misconduct, willful neglect of duties, fraud, criminal conviction, or material breach of confidentiality.
+(c) Return of Property: Upon termination, Employee shall immediately surrender all company laptops, security badges, access tokens, and confidential materials.
+
+7. GOVERNING LAW AND JURISDICTION
+This Agreement shall be governed by, construed, and enforced in accordance with the substantive laws of the State of New York. Any legal action or dispute arising from this contract shall be submitted to the exclusive jurisdiction of the state and federal courts located in New York County.
+
+IN WITNESS WHEREOF, the Employer and the Employee have executed this Employment Agreement as of the date first above written.
+
+NEXUS TECH INNOVATIONS CORP.
+By: Robert Sterling
+Title: Director of Human Resources
+Date: November 15, 2026
+
+EMPLOYEE
+Signature: Sarah Jenkins
+Name: Sarah Jenkins
+Date: November 15, 2026
